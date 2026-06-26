@@ -334,6 +334,30 @@
         </div>
     </div>
 
+    <!-- Floating Audio Player -->
+<div id="audioPlayer" class="fixed bottom-5 right-5 z-50 bg-white/80 backdrop-blur-xl border border-slate-200 shadow-lg rounded-2xl p-3 w-64 transition-all">
+
+    <div class="flex items-center justify-between mb-2">
+        <span class="text-xs font-bold text-slate-600">Now Playing</span>
+        <button onclick="togglePlayer()" class="text-xs text-red-400">Hide</button>
+    </div>
+
+    <audio id="audio" src="music.mp3" loop></audio>
+
+    <div class="flex items-center gap-3">
+        <button onclick="togglePlay()" class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center">
+            <i id="playIcon" class="fa-solid fa-play"></i>
+        </button>
+
+        <div class="flex-1">
+            <div class="text-xs font-semibold text-slate-700 truncate">My Background Music</div>
+            <div class="w-full h-1 bg-slate-200 rounded mt-1 overflow-hidden">
+                <div id="progress" class="h-full bg-primary w-0"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
     <script>
         const minLoadTime = 800; 
         const startLoad = Date.now();
@@ -432,6 +456,33 @@
                     initSoftButtons();
                 }, 1000);
             });
+    </script>
+    <script>
+const audio = document.getElementById("audio");
+const player = document.getElementById("audioPlayer");
+const playIcon = document.getElementById("playIcon");
+const progress = document.getElementById("progress");
+
+function togglePlay() {
+    if (audio.paused) {
+        audio.play();
+        playIcon.classList.remove("fa-play");
+        playIcon.classList.add("fa-pause");
+    } else {
+        audio.pause();
+        playIcon.classList.remove("fa-pause");
+        playIcon.classList.add("fa-play");
+    }
+}
+
+function togglePlayer() {
+    player.classList.toggle("hidden");
+}
+
+audio.addEventListener("timeupdate", () => {
+    const percent = (audio.currentTime / audio.duration) * 100;
+    progress.style.width = percent + "%";
+});
     </script>
 </body>
 </html>
