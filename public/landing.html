@@ -334,55 +334,38 @@
         </div>
     </div>
 
-<!-- FLOATING AUDIO • MODERN CLEAN -->
+
+    <!-- FLOATING AUDIO SIMPLE -->
 <div id="audioPlayer"
-     class="fixed top-4 right-4 z-50 flex items-start">
+     class="fixed top-4 right-4 z-50 bg-white/40 backdrop-blur-md border border-white/30
+            rounded-xl shadow-md p-2.5 w-52">
 
-    <!-- TOGGLE BUTTON -->
-    <button onclick="togglePlayer()"
-        id="toggleBtn"
-        class="w-9 h-14 bg-white/40 backdrop-blur-md border border-white/30
-               rounded-l-xl shadow-sm flex items-center justify-center
-               transition-all duration-300">
+    <audio id="audio" src="music.mp3" loop></audio>
 
-        <i id="toggleIcon"
-           class="fa-solid fa-chevron-right text-slate-700 text-[11px]
-                  transition-transform duration-300">
-        </i>
-    </button>
+    <div class="flex items-center gap-2">
 
-    <!-- PLAYER BOX -->
-    <div id="playerBox"
-         class="bg-white/30 backdrop-blur-md border border-white/30
-                rounded-xl shadow-md p-2.5 w-52 overflow-hidden
-                transition-all duration-300 transform translate-x-0">
+        <!-- PLAY / PAUSE BUTTON -->
+        <button onclick="togglePlay()"
+            class="w-9 h-9 rounded-full bg-primary/80 hover:bg-primary
+                   flex items-center justify-center text-white
+                   shadow-sm transition active:scale-90">
 
-        <audio id="audio" src="music.mp3" loop></audio>
+            <i id="playIcon" class="fa-solid fa-play text-[12px]"></i>
+        </button>
 
-        <div class="flex items-center gap-2">
-
-            <!-- PLAY BUTTON -->
-            <button onclick="togglePlay()"
-                class="w-8 h-8 rounded-full bg-primary/80 hover:bg-primary
-                       flex items-center justify-center text-white
-                       shadow-sm transition active:scale-90">
-
-                <i id="playIcon" class="fa-solid fa-play text-[11px]"></i>
-            </button>
-
-            <!-- TEXT + PROGRESS -->
-            <div class="flex-1">
-                <div class="text-[10px] font-medium text-slate-700 truncate">
-                    My Background Music
-                </div>
-
-                <div class="w-full h-[4px] bg-slate-300/40 rounded mt-1 overflow-hidden">
-                    <div id="progress"
-                         class="h-full bg-primary/70 w-0 rounded-full transition-all duration-150"></div>
-                </div>
+        <!-- TEXT -->
+        <div class="flex-1">
+            <div class="text-[10px] font-medium text-slate-700 truncate">
+                My Background Music
             </div>
 
+            <!-- PROGRESS BAR -->
+            <div class="w-full h-[4px] bg-slate-300/40 rounded mt-1 overflow-hidden">
+                <div id="progress"
+                     class="h-full bg-primary/70 w-0 rounded-full transition-all duration-100"></div>
+            </div>
         </div>
+
     </div>
 </div>
     
@@ -488,10 +471,7 @@
 <script>
 const audio = document.getElementById("audio");
 const playIcon = document.getElementById("playIcon");
-const playerBox = document.getElementById("playerBox");
-const toggleIcon = document.getElementById("toggleIcon");
-
-let hidden = false;
+const progress = document.getElementById("progress");
 
 // PLAY / PAUSE
 function togglePlay() {
@@ -504,35 +484,17 @@ function togglePlay() {
     }
 }
 
-// TOGGLE DRAWER (FIX ANIMASI + PANAH IKUT GERAK)
-function togglePlayer() {
-    hidden = !hidden;
-
-    if (hidden) {
-        // slide keluar
-        playerBox.classList.add("translate-x-[110%]");
-        playerBox.classList.add("opacity-0");
-        playerBox.classList.add("scale-95");
-
-        // panah ikut arah
-        toggleIcon.style.transform = "rotate(180deg) translateX(2px)";
-    } else {
-        // balik masuk
-        playerBox.classList.remove("translate-x-[110%]");
-        playerBox.classList.remove("opacity-0");
-        playerBox.classList.remove("scale-95");
-
-        toggleIcon.style.transform = "rotate(0deg) translateX(0px)";
-    }
-}
-
-// PROGRESS BAR
-const progress = document.getElementById("progress");
-
+// PROGRESS BAR LIVE UPDATE (SMOOTH)
 audio.addEventListener("timeupdate", () => {
     if (!audio.duration) return;
+
     const percent = (audio.currentTime / audio.duration) * 100;
     progress.style.width = percent + "%";
+});
+
+// RESET ICON IF AUDIO ENDS (optional safety)
+audio.addEventListener("ended", () => {
+    playIcon.classList.replace("fa-pause", "fa-play");
 });
 </script>
 </body>
