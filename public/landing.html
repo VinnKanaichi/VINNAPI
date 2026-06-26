@@ -446,7 +446,12 @@
                 else btnSource.style.display = 'none';
 
                 const thumbEl = document.getElementById('dash-thumb');
-                thumbEl.src = config.settings.thumbnail;
+
+thumbEl.src = config.settings.thumbnail;
+
+// kalau video, pastikan reload
+thumbEl.load();
+thumbEl.play().catch(()=>{});
                 thumbEl.onerror = () => { thumbEl.src = 'https://placehold.co/600x400/f8fafc/94a3b8?text=API'; };
 
                 if(config.settings.favicon) document.getElementById('favicon').href = config.settings.favicon;
